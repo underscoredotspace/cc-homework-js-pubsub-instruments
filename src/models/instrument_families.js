@@ -1,3 +1,5 @@
+const pubSub = require('../helpers/pub_sub')
+
 const InstrumentFamilies = function() {
   this.instrumentFamilies = [
     {
@@ -29,14 +31,21 @@ const InstrumentFamilies = function() {
 }
 
 InstrumentFamilies.prototype.bindEvents = function() {
+  pubSub.subscribe('InstrumentFamilies:getNames', () => {
+    pubSub.publish('SelectView:instrumentFamilyNames', this.getNames())
+  })
 
+  pubSub.subscribe('InstrumentFamilies:getFamily', event => {
+    const instrument = event.detail
+    pubSub.publish('ResultView:instrumentFamily', this.getFamily(instrument))
+  })
 }
 
-InstrumentFamilies.prototype.getAll = function() {
-  return this.instrumentFamilies
+InstrumentFamilies.prototype.getNames = function() {
+  return this.instrumentFamilies.map(instrumentFamily => instrumentFamily.name)
 }
 
-InstrumentFamilies.prototype.getOne = function(instrumentName) {
+InstrumentFamilies.prototype.getFamily = function(instrumentName) {
   return this.instrumentFamilies.find(instrumentFamily => instrumentFamily.name == instrumentName)
 }
 
