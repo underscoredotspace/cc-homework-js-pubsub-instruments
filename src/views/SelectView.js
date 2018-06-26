@@ -5,6 +5,11 @@ const SelectView = function(element) {
 }
 
 SelectView.prototype.bindEvents = function() {
+  this.element.addEventListener('change', event => {
+    const instrumentFamilyName = event.target.value
+    pubSub.publish('InstrumentFamilies:getFamily', instrumentFamilyName)
+  })
+
   pubSub.subscribe('SelectView:instrumentFamilyNames', event => {
     const instrumentFamilyNames = event.detail
     this.addinstrumentFamilyNames(instrumentFamilyNames)

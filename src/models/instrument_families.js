@@ -37,7 +37,7 @@ InstrumentFamilies.prototype.bindEvents = function() {
 
   pubSub.subscribe('InstrumentFamilies:getFamily', event => {
     const instrument = event.detail
-    pubSub.publish('ResultView:instrumentFamily', this.getFamily(instrument))
+    pubSub.publish('ResultView:details', this.getFamily(instrument))
   })
 }
 
